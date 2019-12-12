@@ -12,7 +12,7 @@ def camera2b1TakePhotos(cameraRunTime =60, pauseTime=10):
 
     while(camera1Run==True):
         print("taking pic cam1 now")
-        #camera.capture('/media/grendelData102/testworkspace/imagesPiCam1/'+str(datetime.now())+'.jpg')
+        #camera.capture('/media/grendelData102/GrendelData/grendelFotos/'+str(datetime.now())+'.jpg')
         camera.capture('/home/pi/Desktop/2b1images/'+str(datetime.now())+'.jpg')
         sleep(pauseTime)
         cameraRunTime-=pauseTime
