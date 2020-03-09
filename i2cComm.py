@@ -1,14 +1,12 @@
 #!/usr/bin/python3
-
-
-# -*- coding: utf-8 -*-
-# """
-# Spyder Editor
+# i2c commmmprogram
+#  chris rehm  7 marhc 2020
 #
-# This is a temporary script file.
-# """
+#
+
 import smbus
 import time
+
 # for RPI version 1, use “bus = smbus.SMBus(0)”
 bus = smbus.SMBus(1)
 
@@ -16,7 +14,7 @@ bus = smbus.SMBus(1)
 address = 0x04
 
 
-def writeNumber(value=[0]):
+def writeNumber(value):
     print(value)
     bus.write_i2c_block_data(4, 0, value)
     # bus.write_byte(address, value)
@@ -30,22 +28,38 @@ def readNumber():
     return number
 
 
-while True:
-    var = []
-    var1 = input("Enter a comand fucntion 13: ")
-    var.append(int(var1))
-    var2 = input("enter the first data bit")
-    var.append(int(var2))
-    var.append(0)
-    var.append(0)
-    if not var:
-        continue
+def getUserInput(msg):
+    while True:
+        try:
+            answer = int(input(msg))
+        except ValueError:
+            print("not an integer, try again")
+            continue
+        if answer < 1 or answer > 255:
+            print("Must be a number between 0 and 255")
+            continue
+        return answer
 
-    writeNumber(var)
-    print("RPI: Hi Arduino, I sent you ", var)
-    # sleep one second
-    time.sleep(1)
 
-    number = readNumber()
-    print("Arduino: Hey RPI, I received a digit ", number)
-    print()
+if __name__ == "__main__":
+    # test mode we are testing the arduino communications system.
+    # otherwise just call the functions above
+    while True:
+        var = []
+        var1 = getUserInput("Enter a command function: ")
+        var.append(var1)
+        var2 = getUserInput("Enter the first data bit ")
+        var.append(var2)
+        var.append(0)
+        var.append(0)
+        if var1 == 999:
+            break
+
+        writeNumber(var)
+        print("RPI: Hi Arduino, I sent you ", var)
+        # sleep one second
+        time.sleep(1)
+
+        number = readNumber()
+        print("Arduino: Hey RPI, I received a digit ", number)
+        print()
