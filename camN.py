@@ -1,27 +1,34 @@
 #!/usr/bin/python3
-from picamera import PiCamera
+import sys
 from time import sleep
 from datetime import datetime
 
-def cameraTakePhotos(cameraRunTime =60, pauseTime=10):
-    print("hello world from the 2b1 cam function")
+from picamera import PiCamera
+
+def cameraTakePhotos(numberOfFotos=5, pauseTime=2):
+    print("hello world from the Normal cam function")
 
     camera1Run=True
 
     camera = PiCamera()
 
     while(camera1Run==True):
-        print("taking pic cam1 now")
+        print("taking pic Normal cam now")
         #camera.capture('/media/grendelData102/GrendelData/grendelFotos/'+str(datetime.now())+'.jpg')
         camera.capture('/media/grendelData102/GrendelData/grendelFotos/'+"N"+str(datetime.now())+'.jpg')
         sleep(pauseTime)
-        cameraRunTime-=pauseTime
-        if (cameraRunTime < 0):
+        numberOfFotos -= 1
+        #cameraRunTime-=pauseTime
+        #if cameraRunTime < 0:
+        if numberOfFotos == 0:
             camera1Run = False
 
 if __name__ == "__main__":
-    cameraTakePhotos(15,3)
-    
+    arglist = sys.argv
+    if len(arglist) == 3:
+        cameraTakePhotos(float(arglist[1]),float(arglist[2]))
+    else:
+        cameraTakePhotos(3,1)
 
 
 
